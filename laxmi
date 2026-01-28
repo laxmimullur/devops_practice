@@ -1,0 +1,418 @@
+SET1
+
+2.  main folder name javadockerapp
+Create file HelloWorld.java
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Java Application Deployed Using Docker!");
+    }
+}
+
+
+Compile:  javac HelloWorld.java
+Run:  java HelloWorld
+Class file creates
+
+*run given command on powershell
+jar cfe app.jar HelloWorld HelloWorld.class
+now app.jar will added to folder
+
+*create dockerfile in main folde :   Dockerfile
+FROM eclipse-temurin:21
+WORKDIR /app
+COPY app.jar app.jar
+CMD ["java", "-jar", "app.jar"]
+
+
+docker build -t java-docker-app .
+docker run java-docker-app
+
+******in git bash*******
+•	docker login
+•	docker images
+•	docker tag java-docker-app ssk2003/java-docker-app:latest
+•	docker push ssk2003/java-docker-app:latest
+•	docker pull ssk2003/java-docker-app:latest
+•	docker run ssk2003/java-docker-app:latest
+
+
+
+******IN EC2 INSTANCE*****
+THIS IS MY DOCKER ACCESS TOKEN
+•	docker login -u srk2003
+•	
+dckr_pat_9NcUa2KK0eevz9OqfvR4xj7Mf7o
+
+***TO run docker on ec2*******
+docker pull ssk2003/java-docker-app:latest
+docker run ssk2003/java-docker-app:latest
+
+sudo docker run –d –p 8081:80  ssk2003/java-docker-app:latest
+
+
+***********************STEPS TO INSTALL JENKINS ON EC2(LINUX)**********************
+•	sudo yum update –y
+•	sudo yum install java-21-amazon-corretto –y
+•	java –version
+•	sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+
+•	sudo yum install jenkins –y
+•	readlink -f $(which java)
+•	sudo nano /etc/sysconfig/Jenkins
+•	set    :                                        JENKINS_JAVA_CMD="/usr/lib/jvm/java-21-amazon-corretto/bin/java"    
+•	Save & exit (CTRL+O, ENTER, CTRL+X)
+
+
+•	sudo systemctl start Jenkins
+•	sudo systemctl enable Jenkins
+•	sudo systemctl status jenkins
+
+
+
+***************steps to install  docker on linux ec2******************
+sudo yum update -y
+sudo amazon-linux-extras install docker -y
+sudo service docker start
+sudo usermod -a -G docker ec2-user
+
+
+
+
+
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Java Application Deployed Using Docker!");
+    }
+
+
+Set1(3)
+Commands:	
+javac Helloworld.java
+java Helloworld
+jar cfe app.jar Helloworld Helloworld.class	
+java -jar app.jar
+
+dockerfile
+FROM eclipse-temurin:21
+WORKDIR /app
+COPY app.jar app.jar
+CMD ["java", "-jar", "app.jar"]
+Commands:
+docker build -f dockerfile -t java-docker-app .
+docker run java-docker-app
+
+
+
+
+dockerfile vs code commands
+docker login
+docker tag java-docker-app 24p1247/java-docker-app:latest
+docker push 24p1247/java-docker-app:latest
+
+
+ec2 connect and type there commands
+sudo yum  install docke –y
+sudo service docker start
+commands:
+docker  login
+username
+password
+sudo docker pull 24p1247/java-docker-app:latest
+sudo docker run -p 8080:8080 24p1247/java-docker-app
+
+
+set2(3)
+dockerfile:
+<!DOCTYPE html>
+< lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+        <h1>welcome to college website</h1>
+        <p>hosted using docker on Ec2</p>
+</body>
+</html>
+nano Dockerfile
+FROM nginx:latest
+COPY index.html /usr/share/nginx/html/
+EXPOSE 80
+
+docker build -t college-website .
+docker images
+docker run -d -p 8080:80 --name college-site college-website
+(optional
+docker build -t college-website .
+docker ps
+docker stop college-site
+docker rm college-site)
+
+docker tag college-website:latest 24p1247/college-website:latest
+
+docker push 24p1247/college-website:latest
+
+ssh -i chai.pem ec2-user@51.21.180.99
+
+sudo docker pull 24p1247/college-website:latest
+
+sudo docker run -d -p 80:80 24p1247/college-website:latest
+
+optional (sudo docker ps
+	curl http://localhost)
+
+http://51.21.180.99:80
+
+
+
+DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .form {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 5px;
+            margin-right: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f0f0f0;
+            margin-bottom: 5px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Employee Management System</h1>
+
+    <div class="form">
+        <input type="text" id="employeeName" placeholder="Enter employee name">
+        <button onclick="addEmployee()">Add Employee</button>
+    </div>
+
+    <h2>Employee List</h2>
+    <ul id="employeeList"></ul>
+
+    <script>
+        let employees = [];
+
+        function addEmployee() {
+            const nameInput = document.getElementById("employeeName");
+            const name = nameInput.value.trim();
+
+            if (name === "") {
+                alert("Please enter a name");
+                return;
+            }
+
+            employees.push(name);
+            nameInput.value = "";
+            displayEmployees();
+        }
+
+        function displayEmployees() {
+            const list = document.getElementById("employeeList");
+            list.innerHTML = "";
+
+            employees.forEach((employee, index) => {
+                const li = document.createElement("li");
+                li.textContent = `${index + 1}. ${employee}`;
+                list.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
+
+Commands:
+Git status
+Git init
+Git add .
+Git commit –m “abc”
+git remote add origin https://github.com/cchaitrasidamani-max/Employee.git
+git remote –v
+git push origin main
+git branch -M main
+git push -u origin main
+
+
+Step 1: Log in to AWS
+1.	Go to https://aws.amazon.com and click Sign In to Console.
+2.	Enter your credentials and log in.
+________________________________________
+Step 2: Open S3 Service
+1.	In the AWS Console search bar, type S3.
+2.	Click on S3 under Storage.
+________________________________________
+Step 3: Create a New Bucket
+1.	Click Create bucket.
+2.	Bucket name: Type a unique name (e.g., department-website-2026).
+⚠️ Must be globally unique across all AWS accounts.
+3.	Region: Select the region closest to your users (e.g., Asia Pacific (Mumbai) if in India).
+4.	Bucket settings for Block Public Access:
+o	Click Edit.
+o	Uncheck “Block all public access”.
+o	Check the acknowledgment box.
+5.	Leave the rest as default (Versioning, Tags, etc.).
+6.	Click Create bucket.
+________________________________________
+Step 4: Enable Static Website Hosting
+1.	Click on your new bucket name to open it.
+2.	Go to the Properties tab.
+3.	Scroll down to Static website hosting → click Edit.
+4.	Select Enable.
+5.	Choose Host a static website.
+6.	Index document: type index.html.
+7.	Error document (optional): type error.html (or leave blank if you don’t have one).
+8.	Click Save changes.
+9.	Note the Endpoint URL. It will look like:
+Step 5: Upload Your HTML Files
+1.	Go to the Objects tab in your bucket.
+2.	Click Upload → Add files.
+3.	Select your index.html (and other files if any, like CSS/JS).
+4.	Click Upload.
+
+
+Select image  and open
+
+STEP 1: Go to Bucket → Permissions
+1.	Open your bucket devshiv
+2.	Click Permissions tab
+STEP 2: Check “Block Public Access”
+1.	Scroll to Block public access (bucket settings)
+2.	Click Edit
+3.	Make sure:
+o	❌ Block all public access → UNCHECKED
+4.	Tick the acknowledgement checkbox
+5.	Click Save changes
+⚠️ This only allows public access — it does NOT make it public yet.
+
+***on browser ***
+http://devshiv.s3-website.eu-north-1.amazonaws.com
+
+SET-3
+
+docker pull nginx
+docker run -d -p 80:80 --name mynginx nginx
+
+*****In EC2 instance****************
+sudo docker pull nginx
+sudo docker run -d -p 80:80 --name mynginx nginx
+
+curl http://localhost:80
+
+
+******ad security group to ec2*******
+HTTP	  TCP    	80	 0.0.0.0/0
+
+
+****************jenkin install on linux ec2*************************
+//wrning: Take all Jenkins j as small j
+
+
+•	sudo yum update –y
+•	sudo yum install -y java-21-amazon-corretto
+•	java –version
+**the belove command is one line only****
+•	sudo wget -O /etc/yum.repos.d/jenkins.repo \
+https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+•	sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+•	sudo yum install -y jenkins
+•	sudo vi /etc/sysconfig/jenkins
+
+JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
+
+Write :wq at last (it act like nano)
+
+•	sudo systemctl daemon-reload
+•	sudo systemctl start jenkins
+•	sudo systemctl enable jenkins
+
+•	sudo systemctl status jenkins
+
+Step 7: Allow port 8080 (IMPORTANT)
+On AWS Console
+•	Go to EC2 → Security Groups
+•	Add inbound rule:
+o	Type: Custom TCP
+o	Port: 8080
+o	Source: 0.0.0.0/0
+
+http://<EC2_PUBLIC_IP>:8080
+
+Step 9: Get Jenkins initial admin password
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+sudo ss -tulnp | grep 8080
+
+•	sudo systemctl restart jenkins
+•	curl http://localhost:8080
+•	http://13.49.245.221:8080
+
+
+
+
+
+
+
+Mypemkey.pem
+
+
+
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA1bhEfb7R9sTX9wYNtMn8a5KEJiHHW3uDEAOeRJKq8btqV3uk
+iRrG9fHFjv2wNIclV5RyyqHUhwxjvT1kLigIeNRh/hFIYW202Re30hVz1mnfPi+1
+Cx2FDa38vNBP5MZdnUgx4X/i+x5eEjCJa0b0EKGbxA1lIr/9F+eiWmBtH6+LAA4r
+T5/iU2irhgz887iuvrIabM8bjI3Dbnko9iDGM+nKhR5SnGCE9UemoLCGZzZ2ncL+
+uFa3wQp+4eFaYqPk2yR/TIlykyWp1kb6awwVhkeoahQUIPdEYL/VuWSQvqZft29U
+B+hkLAoGc2rlnG/Yn6C4G2GBhOcUiSYhvmJ2xwIDAQABAoIBAEcOHY9lCu+tYFQb
+qiDqasblDpSS9HIA7YE8grkvvi/ibKerTvfadD2+5Tz2MUg1in/EtimShlNkFiEL
+sSv7WV261t2ep17lF5R54z6wrTOjPXqyZ9HLPbpfl0C7TWS1Ythw8UyUtUViQkpv
+4rBNBcYlxOD4xyA3jpENDRhZKM64dZ+m2aZAxXWFZ3FaYLLgxuut4id7VF31Ac+x
+a5z2TNqDm9LVhl+b5Y10fO9aTzvUxHWObIgItx68TlD7A+APM2zPaMdgAJr4SQsG
+fh6Da6YpOrkyN5KF52rKt+2KfAB2/B9kw3XtTGQL6FLjhKhIzXiaEcOviQ+eupM6
+tui9CukCgYEA9LQdgPY6jjC6x/FjNt2TlR/VmE4YMelcpKR2rLJRnPFV3GrYvJua
+9A8xlj4msbzcoW//u+t7VQReW6h8ODT3Sq1Df70NSEpIWV4VOMOGWKc1vhCph8UL
+cR2+biVYJcvh7pllzv9B0YTzLOKFf8nJcfRjRf395Epj+lCJ30u9XTUCgYEA35X9
+IKwyuphxCoUZCWHNnnkyOzXOtMxzPCFHZteE7s+Mm0FARd94xbfmc8iifzCAY8Lr
+E9J4WeV7zSi4IWbwLVX9+expKs1KEDjZVNiskQRf6C61iI4wlNS0LnCMvwlucZU1
+iIbioVjBPfDFKeev6K3ajLqxj3HyVA/rh1zHz4sCgYEAjYm84wIJHoObFdlObMa+
+/Wt7bWwGXKBBQM4MApnl0ORaqHJ4yKcsemxrXx613OqDpzET94sePC+ZsGSE7THd
+s6kCONmN3DlzHZXoqnuVsqOM11Hl7S0REC2HH0ikcsA5/3tkwtUsKdc/nL+tPhvm
+U+5qmWpvN2O77mY1SR4S+t0CgYAk7VjJNKeMOfExk5n2+rhDHDE3pkNliP7fR3/L
+dHz4FD9cxQIgiDAiN6VQKirsZs5Nq7u3omNONaCk2bzPh3jThAhWZr1X3GAHHdyH
+LuIRcW+FoXFKBHHxos+/e8dDJgOfrs0Qp3Z2v3nrCQEHUsSy4UPfSlZZIrCrQZXc
+3W4C0QKBgDBzRBPHgRALjC+JwJyQNZWDqZYlZh+8WnET+AwAQlMioCo31uHNahtH
+ZMdcU83rl35GL7HcPBlVhrkeiTU7YSIROx5pP4Pn/LluCnwvwwOIrG+HtztSkRvs
+nLicCvBcOXKTEMa8KRp14a6ZemaxLdSYjQGDNx995FA23kUsE1sf
+-----END RSA PRIVATE KEY-----
+
+
+
+
+
